@@ -54,10 +54,10 @@ class EmbeddingService:
         # Try using Gemini Embeddings API via REST if API key is present
         if settings.GEMINI_API_KEY and settings.LLM_PROVIDER == "gemini":
             try:
-                url = f"https://generativelanguage.googleapis.com/v1beta/models/embedding-001:embedContent?key={settings.GEMINI_API_KEY}"
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key={settings.GEMINI_API_KEY}"
                 headers = {"Content-Type": "application/json"}
                 payload = {
-                    "model": "models/embedding-001",
+                    "model": "models/gemini-embedding-001",
                     "content": {"parts": [{"text": text[:4000]}]}
                 }
                 req = urllib.request.Request(
