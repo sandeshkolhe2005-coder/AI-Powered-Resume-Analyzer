@@ -29,42 +29,48 @@ function useCountUp(target, duration = 2000, delay = 1200) {
 
 // Typewriter Heading Component
 function TypewriterHeading({ text, speed = 35, delay = 400, onComplete }) {
-  const [displayedText, setDisplayedText] = React.useState('');
-  const [isFinished, setIsFinished] = React.useState(false);
+  const [index, setIndex] = React.useState(0);
+  const onCompleteRef = React.useRef(onComplete);
 
   React.useEffect(() => {
-    let timer;
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
+  React.useEffect(() => {
+    setIndex(0);
+    let interval;
     const startTimeout = setTimeout(() => {
-      let currentIdx = 0;
-      const type = () => {
-        if (currentIdx < text.length) {
-          setDisplayedText(prev => prev + text.charAt(currentIdx));
-          currentIdx++;
-          timer = setTimeout(type, speed);
-        } else {
-          setIsFinished(true);
-          if (onComplete) onComplete();
-        }
-      };
-      type();
+      interval = setInterval(() => {
+        setIndex((prev) => {
+          if (prev >= text.length) {
+            clearInterval(interval);
+            if (onCompleteRef.current) onCompleteRef.current();
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, speed);
     }, delay);
 
     return () => {
       clearTimeout(startTimeout);
-      clearTimeout(timer);
+      if (interval) clearInterval(interval);
     };
-  }, [text, speed, delay, onComplete]);
+  }, [text, speed, delay]);
+
+  const displayedText = text.slice(0, index);
+  const isFinished = index >= text.length;
 
   return (
     <h2 className="text-3xl sm:text-5xl lg:text-[56px] font-bold leading-tight sm:leading-[60px] tracking-[-1.5px] font-urbanist relative text-left">
-      {displayedText.split('').map((char, index) => {
-        // Color first 67 characters black, rest white
-        const isBlack = index < 67;
+      {displayedText.split('').map((char, idx) => {
+        // Color first 65 characters white, rest vibrant purple
+        const isFirstPart = idx < 65;
         return (
           <span 
-            key={index} 
+            key={idx} 
             className="transition-colors duration-200"
-            style={{ color: isBlack ? '#000000' : '#ffffff' }}
+            style={{ color: isFirstPart ? '#ffffff' : '#A068FF' }}
           >
             {char}
           </span>
@@ -208,19 +214,20 @@ export default function Home() {
         className="w-full max-w-[1920px] mx-auto px-6 lg:px-16 py-6 flex items-center justify-between z-10 shrink-0"
       >
         <div className="flex items-center gap-10">
-          <Link to="/" className="flex items-center">
-            <img 
-              src="https://polo-pecan-73837341.figma.site/_assets/v11/17ae538989a509947a8de3892c644664895e69b1.png" 
-              alt="Marketeam Logo" 
-              className="h-8 object-contain"
-            />
+          <Link to="/" className="flex items-center gap-2.5 hover:opacity-90 transition-all select-none">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-accentPrimary to-accentViolet flex items-center justify-center font-bold text-white shadow-lg shadow-accentPrimary/25 text-sm">
+              R
+            </div>
+            <span className="font-bold text-textPrimary text-lg tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-accentPrimary to-accentViolet font-sans">
+              ATS ANALYZER
+            </span>
           </Link>
           <nav className="hidden md:flex items-center gap-8">
             {headerNav.map((item) => (
               <Link 
                 key={item.name} 
                 to={item.to} 
-                className="text-black text-[15px] font-medium nav-underline hover:text-black/80 transition-colors"
+                className="text-white text-[15px] font-medium nav-underline nav-underline-white hover:text-white/80 transition-colors"
               >
                 {item.name}
               </Link>

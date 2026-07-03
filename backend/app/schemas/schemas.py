@@ -14,10 +14,18 @@ class UserLogin(BaseModel):
 class UserResponse(BaseModel):
     id: str
     email: EmailStr
+    is_verified: bool = False
     created_at: datetime
 
     class Config:
         from_attributes = True
+
+class UserVerification(BaseModel):
+    email: EmailStr
+    code: str = Field(..., min_length=6, max_length=6, description="6-digit verification code")
+
+class UserResendCode(BaseModel):
+    email: EmailStr
 
 class Token(BaseModel):
     access_token: str

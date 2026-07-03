@@ -47,6 +47,8 @@ def test_root_endpoint(client):
     assert response.status_code == 200
     assert response.json()["status"] == "online"
 
+from app.models.models import User
+
 def test_user_flow(client):
     # Test Register
     reg_response = client.post(
@@ -63,7 +65,27 @@ def test_user_flow(client):
     )
     assert dup_response.status_code == 400
     
-    # Test Login
+    # Verify email
+    db = TestingSessionLocal()
+    db_user = db.query(User).filter(User.email == "tester@example.com").first()
+    verification_code = db_user.verification_code
+    db.close()
+    
+    # Test verification with invalid code
+    bad_verify = client.post(
+        "/api/v1/auth/verify",
+        json={"email": "tester@example.com", "code": "000000"}
+    )
+    assert bad_verify.status_code == 400
+    
+    # Test verification with valid code
+    verify_response = client.post(
+        "/api/v1/auth/verify",
+        json={"email": "tester@example.com", "code": verification_code}
+    )
+    assert verify_response.status_code == 200
+    
+    # Test Login (should now succeed)
     login_response = client.post(
         "/api/v1/auth/login",
         json={"email": "tester@example.com", "password": "password123"}

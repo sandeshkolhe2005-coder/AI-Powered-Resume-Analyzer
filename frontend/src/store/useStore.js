@@ -46,6 +46,30 @@ export const useStore = create((set, get) => ({
     }
   },
 
+  verifyCode: async (email, code) => {
+    set({ authLoading: true, authError: null });
+    try {
+      await api.post('/auth/verify', { email, code });
+      set({ authLoading: false });
+      return true;
+    } catch (err) {
+      set({ authLoading: false, authError: err.response?.data?.detail || 'Verification failed' });
+      return false;
+    }
+  },
+
+  resendCode: async (email) => {
+    set({ authLoading: true, authError: null });
+    try {
+      await api.post('/auth/resend-code', { email });
+      set({ authLoading: false });
+      return true;
+    } catch (err) {
+      set({ authLoading: false, authError: err.response?.data?.detail || 'Failed to resend code' });
+      return false;
+    }
+  },
+
   login: async (email, password) => {
     set({ authLoading: true, authError: null });
     try {

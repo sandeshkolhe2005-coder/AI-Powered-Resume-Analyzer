@@ -56,7 +56,7 @@ export default function Blog() {
   ];
 
   return (
-    <div className="min-h-screen text-textPrimary flex flex-col justify-between overflow-x-hidden relative font-sans bg-black">
+    <div className="min-h-screen text-textPrimary flex flex-col justify-between overflow-x-hidden relative font-sans bg-bgPrimary">
       {/* Background HLS Video */}
       <BackgroundVideo />
 

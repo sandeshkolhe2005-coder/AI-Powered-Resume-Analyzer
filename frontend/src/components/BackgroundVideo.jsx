@@ -33,11 +33,11 @@ export default function BackgroundVideo() {
         muted
         loop
         playsInline
-        className="w-full h-full object-cover opacity-50"
-        style={{ filter: 'brightness(0.65) contrast(1.15)' }}
+        className="w-full h-full object-cover opacity-80"
+        style={{ filter: 'brightness(0.85) contrast(1.05)' }}
       />
       {/* Subtle bottom linear-gradient fade overlay instead of heavy mix-blend multiplier */}
-      <div className="absolute inset-0 bg-gradient-to-t from-bgPrimary via-transparent to-bgPrimary/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-bgPrimary/30 via-transparent to-bgPrimary/20 pointer-events-none" />
     </div>
   );
 }
