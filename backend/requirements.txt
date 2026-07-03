@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+sqlalchemy
+passlib[bcrypt]
+bcrypt
+pyjwt
+python-multipart
+python-docx
+pypdf
+celery
+redis
+pytest
+supabase

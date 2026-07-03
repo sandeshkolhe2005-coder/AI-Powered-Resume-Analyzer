@@ -1,0 +1,39 @@
+# Python Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Local Database Files
+app.db
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+
+# Environment Variables & Secrets (CRITICAL)
+.env
+.env.local
+.env.*.local
+
+# Frontend Bundles & Packages
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+dist/
+build/
+
+# Uploaded Resumes
+uploads/
+frontend/uploads/
+
+# OS/Editor configs
+.DS_Store
+.idea/
+.vscode/
+Thumbs.db
